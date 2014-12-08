@@ -670,9 +670,9 @@ class Invite
 //	    $content .= "END:VEVENT\n";
 //	    $content .= "END:VCALENDAR";
 //
-//        $content = "BEGIN:VCALENDAR\n";
-//        $content .= "PRODID:-//Microsoft Corporation//Outlook 14.0 MIMEDIR//EN\n";
-//        $content .= "VERSION:2.0\n";
+        $content = "BEGIN:VCALENDAR\n";
+        $content .= "PRODID:-//Microsoft Corporation//Outlook 14.0 MIMEDIR//EN\n";
+        $content .= "VERSION:2.0\n";
 
         $content .= "BEGIN:VTIMEZONE\n";
         $content .= "TZID:Romance Standard Time\n";
