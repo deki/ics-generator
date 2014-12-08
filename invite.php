@@ -644,6 +644,7 @@ class Invite
 	if ($this->isValid()) {
 
 	    $content = "BEGIN:VCALENDAR\n";
+        $content .= "PRODID:-//Microsoft Corporation//Outlook 14.0 MIMEDIR//EN\n";
 	    $content .= "VERSION:2.0\n";
 	    $content .= "CALSCALE:GREGORIAN\n";
 	    $content .= "METHOD:REQUEST\n";
