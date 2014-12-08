@@ -674,21 +674,21 @@ class Invite
             $content .= "PRODID:-//Microsoft Corporation//Outlook 14.0 MIMEDIR//EN\n";
             $content .= "VERSION:2.0\n";
 
-            $content .= "BEGIN:VTIMEZONE\n";
-                $content .= "TZID:Romance Standard Time\n";
-                $content .= "BEGIN:STANDARD\n";
-                    $content .= "DTSTART:16011028T030000\n";
-                    $content .= "RRULE:FREQ=YEARLY;BYDAY=-1SU;BYMONTH=10\n";
-                    $content .= "TZOFFSETFROM:+0200\n";
-                    $content .= "TZOFFSETTO:+0100\n";
-                $content .= "END:STANDARD\n";
-                $content .= "DTSTART:16010325T020000\n";
-                $content .= "BEGIN:DAYLIGHT\n";
-                    $content .= "RRULE:FREQ=YEARLY;BYDAY=-1SU;BYMONTH=3\n";
-                    $content .= "TZOFFSETFROM:+0100\n";
-                    $content .= "TZOFFSETTO:+0200\n";
-                $content .= "END:DAYLIGHT\n";
-            $content .= "END:VTIMEZONE\n";
+//            $content .= "BEGIN:VTIMEZONE\n";
+//                $content .= "TZID:Romance Standard Time\n";
+//                $content .= "BEGIN:STANDARD\n";
+//                    $content .= "DTSTART:16011028T030000\n";
+//                    $content .= "RRULE:FREQ=YEARLY;BYDAY=-1SU;BYMONTH=10\n";
+//                    $content .= "TZOFFSETFROM:+0200\n";
+//                    $content .= "TZOFFSETTO:+0100\n";
+//                $content .= "END:STANDARD\n";
+//                $content .= "DTSTART:16010325T020000\n";
+//                $content .= "BEGIN:DAYLIGHT\n";
+//                    $content .= "RRULE:FREQ=YEARLY;BYDAY=-1SU;BYMONTH=3\n";
+//                    $content .= "TZOFFSETFROM:+0100\n";
+//                    $content .= "TZOFFSETTO:+0200\n";
+//                $content .= "END:DAYLIGHT\n";
+//            $content .= "END:VTIMEZONE\n";
 
             $content .= "BEGIN:VEVENT\n";
                 $content .= "CLASS:PUBLIC\n";
