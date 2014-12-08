@@ -13,7 +13,6 @@ session_start();
  */
 class Invite
 {
-private $test;
     /**
      * The event creation date
      * @var DateTime
