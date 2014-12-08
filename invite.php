@@ -673,30 +673,20 @@ class Invite
         $content = "BEGIN:VCALENDAR\n";
             $content .= "PRODID:-//Microsoft Corporation//Outlook 14.0 MIMEDIR//EN\n";
             $content .= "VERSION:2.0\n";
-
-//            $content .= "BEGIN:VTIMEZONE\n";
-//                $content .= "TZID:Romance Standard Time\n";
-//                $content .= "BEGIN:STANDARD\n";
-//                    $content .= "DTSTART:16011028T030000\n";
-//                    $content .= "RRULE:FREQ=YEARLY;BYDAY=-1SU;BYMONTH=10\n";
-//                    $content .= "TZOFFSETFROM:+0200\n";
-//                    $content .= "TZOFFSETTO:+0100\n";
-//                $content .= "END:STANDARD\n";
-//                $content .= "DTSTART:16010325T020000\n";
-//                $content .= "BEGIN:DAYLIGHT\n";
-//                    $content .= "RRULE:FREQ=YEARLY;BYDAY=-1SU;BYMONTH=3\n";
-//                    $content .= "TZOFFSETFROM:+0100\n";
-//                    $content .= "TZOFFSETTO:+0200\n";
-//                $content .= "END:DAYLIGHT\n";
-//            $content .= "END:VTIMEZONE\n";
-
             $content .= "BEGIN:VEVENT\n";
+                $content .= "UID:{$this->getUID()}\n";
                 $content .= "CLASS:PUBLIC\n";
+                $content .= "CREATED:{$this->getCreated(true)}\n";
                 $content .= "DESCRIPTION:{$this->getDescription()}\n";
                 $content .= "DTEND:{$this->getEnd(true)}\n";
                 $content .= "DTSTAMP:{$this->getStart(true)}\n";
                 $content .= "DTSTART:{$this->getStart(true)}\n";
                 $content .= "SUMMARY:{$this->getName()}\n";
+                $content .= "ORGANIZER;CN={$this->getFromName()}:mailto:{$this->getFromEmail()}\n";
+                foreach ($this->getAttendees() as $email => $name)
+                {
+                    $content .= "ATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE;CN={$name};X-NUM-GUESTS=0:mailto:{$email}\n";
+                }
                 $content .= "LOCATION:{$this->getLocation()}\n";
             $content .= "END:VEVENT\n";
         $content .= "END:VCALENDAR\n";;
