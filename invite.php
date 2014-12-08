@@ -13,7 +13,7 @@ session_start();
  */
 class Invite
 {
-    private $test;
+    private $mtest;
     /**
      * The event creation date
      * @var DateTime
