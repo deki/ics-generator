@@ -654,8 +654,9 @@ class Invite
                     $content .= " ;CN={$name};X-NUM-GUESTS=0:mailto:{$email}\n";
                 }
 
+//        {$this->getDescription()}
                 $content .= "CREATED:{$this->getCreated(true)}\n";
-                $content .= "DESCRIPTION:{$this->getDescription()}\n";
+                $content .= "DESCRIPTION:test\n";
                 $content .= "LAST-MODIFIED:{$this->getCreated(true)}\n";
                 $content .= "LOCATION:{$this->getLocation()}\n";
                 $content .= "SEQUENCE:0\n";
