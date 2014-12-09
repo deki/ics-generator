@@ -97,9 +97,9 @@ class Invite
     public function __construct($uid = null)
     {
 	if (null === $uid) {
-	    $this->_uid = uniqid(rand(0, getmypid())) . "@ahmadamin.com";
+	    $this->_uid = uniqid(rand(0, getmypid())) . "@cpeople.ru";
 	} else {
-	    $this->_uid = $uid . "@ahmadamin.com";
+	    $this->_uid = $uid . "@cpeople.ru";
 	}
 
 	if (!isset($_SESSION['calander_invite_downloaded'])) {
@@ -475,25 +475,18 @@ class Invite
      * Get the start time set for the even
      * @return string
      */
-    public function getStart($formatted = null)
+    public function getStart($format = "Ymd\THis\Z")
     {
-	if (null !== $formatted) {
-	    return $this->_start->format("Ymd\THis\Z");
-	}
-
-	return $this->_start;
+	    return $this->_start->format($format);
     }
 
     /**
      * Get the end time set for the event
      * @return string
      */
-    public function getEnd($formatted = null)
+    public function getEnd($format = "Ymd\THis\Z")
     {
-	if (null !== $formatted) {
-	    return $this->_end->format("Ymd\THis\Z");
-	}
-	return $this->_end;
+	    return $this->_end->format($format);
     }
 
     /**
@@ -643,55 +636,34 @@ class Invite
     {
 	if ($this->isValid()) {
 
-//        $content = "BEGIN:VCALENDAR\n";
-//            $content .= "PRODID:-//Microsoft Corporation//Outlook 14.0 MIMEDIR//EN\n";
-//            $content .= "VERSION:2.0\n";
-//            $content .= "BEGIN:VEVENT\n";
-//                $content .= "UID:{$this->getUID()}\n";
-//                $content .= "CLASS:PUBLIC\n";
-//                $content .= "CREATED:{$this->getCreated(true)}\n";
-//                $content .= "DESCRIPTION:{$this->getDescription()}\n";
-//                $content .= "DTEND:{$this->getEnd(true)}\n";
-//                $content .= "DTSTAMP:{$this->getStart(true)}\n";
-//                $content .= "DTSTART:{$this->getStart(true)}\n";
-//                $content .= "SUMMARY:{$this->getName()}\n";
-//                $content .= "ORGANIZER;CN={$this->getFromName()}:mailto:{$this->getFromEmail()}\n";
-//                foreach ($this->getAttendees() as $email => $name)
-//                {
-//                    $content .= "ATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE;CN={$name};X-NUM-GUESTS=0:mailto:{$email}\n";
-//                }
-//                $content .= "LOCATION:{$this->getLocation()}\n";
-//            $content .= "END:VEVENT\n";
-//        $content .= "END:VCALENDAR\n";
+        $content = "BEGIN:VCALENDAR\n";
+            $content .= "PRODID:-//Ics-generator//Ics-generator calendar//EN\n";
+            $content .= "VERSION:2.0\n";
+            $content .= "CALSCALE:GREGORIAN\n";
+            $content .= "METHOD:REQUEST\n";
+            $content .= "BEGIN:VEVENT\n";
+                $content .= "DTSTART;VALUE=DATE:{$this->getStart('Ymd')}\n";
+                $content .= "DTEND;VALUE=DATE:{$this->getEnd('Ymd')}\n";
+                $content .= "DTSTAMP:{$this->getStart()}\n";
+                $content .= "ORGANIZER;CN={$this->getFromName()}:{$this->getFromEmail()}\n";
+                $content .= "UID:{$this->getUID()}\n";
 
-        $content = "BEGIN:VCALENDAR
-PRODID:-//Google Inc//Google Calendar 70.9054//EN
-VERSION:2.0
-CALSCALE:GREGORIAN
-METHOD:REQUEST
-BEGIN:VEVENT
-DTSTART;VALUE=DATE:20141209
-DTEND;VALUE=DATE:20141210
-DTSTAMP:20141209T082010Z
-ORGANIZER;CN=Klim Semenov:mailto:klimsemenov86@gmail.com
-UID:2ictb533r707a43lmolfbaq02c@google.com
-ATTENDEE;CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED;RSVP=TRUE
- ;CN=Klim Semenov;X-NUM-GUESTS=0:mailto:klimsemenov86@gmail.com
-ATTENDEE;CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT;PARTSTAT=NEEDS-ACTION;RSVP=
- TRUE;CN=klim@cpeople.ru;X-NUM-GUESTS=0:mailto:klim@cpeople.ru
-CREATED:20141209T082009Z
-DESCRIPTION:View your event at https://www.google.com/calendar/event?action
- =VIEW&eid=MmljdGI1MzNyNzA3YTQzbG1vbGZiYXEwMmMga2xpbUBjcGVvcGxlLnJ1&tok=MjMj
- a2xpbXNlbWVub3Y4NkBnbWFpbC5jb204MGM0MDk4YTE2OWUwZTVhODU5OGEzMzYxNjk3Y2I1MTY
- 1MDY2OGE0&ctz=UTC&hl=en.
-LAST-MODIFIED:20141209T082009Z
-LOCATION:ЦПипл
-SEQUENCE:0
-STATUS:CONFIRMED
-SUMMARY:Тест
-TRANSP:TRANSPARENT
-END:VEVENT
-END:VCALENDAR";
+                foreach ($this->getAttendees() as $email => $name)
+                {
+                    $content .= "ATTENDEE;CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT;PARTSTAT=NEEDS-ACTION;RSVP=TRUE\n";
+                    $content .= " ;CN={$name};X-NUM-GUESTS=0:mailto:{$email}\n";
+                }
+
+                $content .= "CREATED:{$this->getCreated(true)}\n";
+                $content .= "DESCRIPTION:{$this->getDescription()}\n";
+                $content .= "LAST-MODIFIED:{$this->getCreated(true)}\n";
+                $content .= "LOCATION:{$this->getLocation()}\n";
+                $content .= "SEQUENCE:0\n";
+                $content .= "STATUS:CONFIRMED\n";
+                $content .= "SUMMARY:{$this->getName()}\n";
+                $content .= "TRANSP:TRANSPARENT\n";
+            $content .= "END:VEVENT\n";
+        $content .= "END:VCALENDAR";
 
 	    $this->_generated = $content;
 	    return $this->_generated;
