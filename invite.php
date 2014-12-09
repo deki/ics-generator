@@ -429,7 +429,7 @@ class Invite
      */
     public function getDescription()
     {
-	return $this->getBody();
+	return preg_replace("/[\r\n]+/", " ", $this->getBody());
     }
 
     /**
@@ -654,9 +654,8 @@ class Invite
                     $content .= " ;CN={$name};X-NUM-GUESTS=0:mailto:{$email}\n";
                 }
 
-//        {$this->getDescription()}
                 $content .= "CREATED:{$this->getCreated(true)}\n";
-                $content .= "DESCRIPTION:test\n";
+                $content .= "DESCRIPTION:{$this->getDescription()}\n";
                 $content .= "LAST-MODIFIED:{$this->getCreated(true)}\n";
                 $content .= "LOCATION:{$this->getLocation()}\n";
                 $content .= "SEQUENCE:0\n";
