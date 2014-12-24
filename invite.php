@@ -430,7 +430,7 @@ class Invite
      */
     public function getDescription()
     {
-        return $this->getBody();
+        return preg_replace("/[\r\n]+/", " ", $this->getBody());
     }
 
     /**
@@ -476,12 +476,11 @@ class Invite
      * Get the start time set for the even
      * @return string
      */
-    public function getStart($formatted = null)
+    public function getStart($format = "Ymd\THis\Z")
     {
-	if (null !== $formatted && $this->_start!=null) {
-            return $this->_start->format("Ymd\THis\Z");
+        if ($this->_start!=null) {
+            return $this->_start->format($format);
         }
-
         return $this->_start;
     }
 
@@ -489,10 +488,10 @@ class Invite
      * Get the end time set for the event
      * @return string
      */
-    public function getEnd($formatted = null)
+    public function getEnd($format = "Ymd\THis\Z")
     {
-	if (null !== $formatted && $this->_end!=null) {
-            return $this->_end->format("Ymd\THis\Z");
+        if ($this->_end!=null) {
+            return $this->_end->format($format);
         }
         return $this->_end;
     }
@@ -645,37 +644,39 @@ class Invite
         if ($this->isValid()) {
 
             $content = "BEGIN:VCALENDAR\n";
+            $content .= "PRODID:-//Ics-generator//Ics-generator calendar//EN\n";
             $content .= "VERSION:2.0\n";
             $content .= "CALSCALE:GREGORIAN\n";
             $content .= "METHOD:REQUEST\n";
             $content .= "BEGIN:VEVENT\n";
-            $content .= "UID:{$this->getUID()}\n";
-            $content .= "DTSTART:{$this->getStart(true)}\n";
-            $content .= "DTEND:{$this->getEnd(true)}\n";
-            $content .= "DTSTAMP:{$this->getStart(true)}\n";
-            $content .= "ORGANIZER;CN={$this->getFromName()}:mailto:{$this->getFromEmail()}\n";
+                $content .= "DTSTART;VALUE=DATE:{$this->getStart('Ymd')}\n";
+                $content .= "DTEND;VALUE=DATE:{$this->getEnd('Ymd')}\n";
+                $content .= "DTSTAMP:{$this->getStart()}\n";
+                $content .= "ORGANIZER;CN={$this->getFromName()}:{$this->getFromEmail()}\n";
+                $content .= "UID:{$this->getUID()}\n";
 
-            foreach ($this->getAttendees() as $email => $name)
-            {
-                $content .= "ATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE;CN={$name};X-NUM-GUESTS=0:mailto:{$email}\n";
-            }
+                foreach ($this->getAttendees() as $email => $name)
+                {
+                    $content .= "ATTENDEE;CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT;PARTSTAT=NEEDS-ACTION;RSVP=TRUE\n";
+                    $content .= " ;CN={$name};X-NUM-GUESTS=0:mailto:{$email}\n";
+                }
 
-            $content .= "CREATED:{$this->getCreated(true)}\n";
-            $content .= "DESCRIPTION:{$this->getDescription()}\n";
-            $content .= "LAST-MODIFIED:{$this->getStart(true)}\n";
-            $content .= "LOCATION:{$this->getLocation()}\n";
-            $content .= "SUMMARY:{$this->getName()}\n";
-            $content .= "SEQUENCE:0\n";
-            $content .= "STATUS:NEEDS-ACTION\n";
-            $content .= "TRANSP:OPAQUE\n";
+                $content .= "CREATED:{$this->getCreated(true)}\n";
+                $content .= "DESCRIPTION:{$this->getDescription()}\n";
+                $content .= "LAST-MODIFIED:{$this->getCreated(true)}\n";
+                $content .= "LOCATION:{$this->getLocation()}\n";
+                $content .= "SEQUENCE:0\n";
+                $content .= "STATUS:CONFIRMED\n";
+                $content .= "SUMMARY:{$this->getName()}\n";
+                $content .= "TRANSP:TRANSPARENT\n";
             $content .= "END:VEVENT\n";
-            $content .= "END:VCALENDAR";
+        $content .= "END:VCALENDAR";
 
-            $this->_generated = $content;
-            return $this->_generated;
-        }
+	    $this->_generated = $content;
+	    return $this->_generated;
+	}
 
-        return false;
+	return false;
     }
 
 }
